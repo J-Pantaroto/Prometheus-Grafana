@@ -30,7 +30,7 @@ register.registerMetric(httpRequestDurationSeconds);
 
 const httpRequestsErrorsTotal = new client.Counter({
   name: "http_requests_errors_total",
-  help: "Total de requisições HTTP que retornaram erro (4xx ou 5xx)",
+  help: "Total de requisições HTTP que retornaram erro",
   labelNames: ["method", "route", "status_code"],
 });
 register.registerMetric(httpRequestsErrorsTotal);
