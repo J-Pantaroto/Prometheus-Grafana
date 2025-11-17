@@ -5,7 +5,7 @@ services:
     image: postgres:15
     container_name: db
     environment:
-      POSTGRES_DB: meu_banco
+      POSTGRES_DB: abast
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
@@ -22,7 +22,7 @@ services:
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: postgres
-      DB_NAME: meu_banco
+      DB_NAME: abast
       PORT: 8080
     depends_on:
       - db
