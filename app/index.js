@@ -5,7 +5,7 @@ const pool = require("./db");
 const app = express();
 
 
-// Registro que vai guardar todas as métricas
+// Registro que vai guardar todas as mÃ©tricas
 const register = new client.Registry();
 
 client.collectDefaultMetrics({
@@ -15,14 +15,14 @@ client.collectDefaultMetrics({
 
 const httpRequestsTotal = new client.Counter({
   name: "http_requests_total",
-  help: "Total de requisições HTTP recebidas",
+  help: "Total de requisiÃ§Ãµes HTTP recebidas",
   labelNames: ["method", "route", "status_code"],
 });
 register.registerMetric(httpRequestsTotal);
 
 const httpRequestDurationSeconds = new client.Histogram({
   name: "http_request_duration_seconds",
-  help: "Duração das requisições HTTP em segundos",
+  help: "DuraÃ§Ã£o das requisiÃ§Ãµes HTTP em segundos",
   labelNames: ["method", "route", "status_code"],
   buckets: [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2, 5],
 });
@@ -30,7 +30,7 @@ register.registerMetric(httpRequestDurationSeconds);
 
 const httpRequestsErrorsTotal = new client.Counter({
   name: "http_requests_errors_total",
-  help: "Total de requisições HTTP que retornaram erro (4xx ou 5xx)",
+  help: "Total de requisiÃ§Ãµes HTTP que retornaram erro (4xx ou 5xx)",
   labelNames: ["method", "route", "status_code"],
 });
 register.registerMetric(httpRequestsErrorsTotal);
@@ -91,7 +91,7 @@ app.get("/abastecimentos", async (req, res) => {
   }
 });
 
-// Resumo de abastecimentos por veículo
+// Resumo de abastecimentos por veÃ­culo
 app.get("/abastecimentos/resumo", async (req, res) => {
   try {
     const result = await pool.query(
