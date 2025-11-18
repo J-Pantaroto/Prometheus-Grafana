@@ -4,8 +4,6 @@ const pool = require("./db");
 
 const app = express();
 
-
-// Registro que vai guardar todas as métricas
 const register = new client.Registry();
 
 client.collectDefaultMetrics({
@@ -30,7 +28,7 @@ register.registerMetric(httpRequestDurationSeconds);
 
 const httpRequestsErrorsTotal = new client.Counter({
   name: "http_requests_errors_total",
-  help: "Total de requisições HTTP que retornaram erro",
+  help: "Total de requisições HTTP que retornaram erro (4xx ou 5xx)",
   labelNames: ["method", "route", "status_code"],
 });
 register.registerMetric(httpRequestsErrorsTotal);
@@ -62,7 +60,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
 app.get("/health", (req, res) => {
   res.json({ status: "ok", message: "API de abastecimentos rodando" });
 });
@@ -91,7 +88,6 @@ app.get("/abastecimentos", async (req, res) => {
   }
 });
 
-// Resumo de abastecimentos por veículo
 app.get("/abastecimentos/resumo", async (req, res) => {
   try {
     const result = await pool.query(
@@ -101,4 +97,32 @@ app.get("/abastecimentos/resumo", async (req, res) => {
          SUM(valor_total) AS total_gasto,
          AVG(valor_total / NULLIF(litros, 0)) AS preco_medio_litro
        FROM abastecimentos
-       WHERE ativo =
+       WHERE ativo = TRUE
+       GROUP BY veiculo
+       ORDER BY total_gasto DESC`
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Erro ao buscar resumo de abastecimentos:", err);
+    res.status(500).json({ error: "Erro ao buscar resumo de abastecimentos" });
+  }
+});
+
+
+
+app.get("/metrics", async (req, res) => {
+  try {
+    res.set("Content-Type", register.contentType);
+    res.end(await register.metrics());
+  } catch (err) {
+    console.error("Erro ao gerar métricas:", err);
+    res.status(500).end(err.message);
+  }
+});
+
+
+const PORT = process.env.PORT || 8080;
+
+app.listen(PORT, () => {
+  console.log(` Aplicação escutando na porta ${PORT}`);
+});
