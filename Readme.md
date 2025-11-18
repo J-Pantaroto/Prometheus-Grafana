@@ -60,8 +60,8 @@ docker-compose up -d --build
 3. No menu lateral, vá em **Dashboards > New > Import**.
 4. Clique em **Upload JSON file** e selecione o arquivo `grafana-dashboard.json` que está na raiz do projeto.
 5. Na tela de importação:
-   - Em **Prometheus data source**, selecione a fonte de dados `prometheus` que você criou.
-   - Em **PostgreSQL data source**, selecione a fonte de dados `postgres` (ou o nome que você deu).
+   - Em **Prometheus data source**, selecione a fonte de dados `prometheus`
+   - Em **PostgreSQL data source**, selecione a fonte de dados `postgres`
 6. Clique em **Import**.
 
 Após isso, o dashboard será carregado com todos os gráficos prontos (dados de abastecimento + métricas de observabilidade).
